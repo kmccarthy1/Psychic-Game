@@ -6,59 +6,72 @@ var LetterBank = ["a","b","c","d","e","f","g","h","i","j","k","l","m",
 
 var wins = 0;
 var losses = 0; 
-var guessesLeft, guessedLetters, letterToGuess;
+var guessesLeft = 12;
+var guessesSoFar = [];
 
-resetGame();
+    function reset () {
+            guessesLeft = 12;
+            guessesSoFar = [];
+            ComputerGuess = LetterBank[Math.floor(Math.random() * LetterBank.length)];
+            console.log(ComputerGuess)
+    }
+        reset();
+
+    function newWord () {
+        guessesSoFar = [];
+        guessesLeft = 12;
+        ComputerGuess = LetterBank[Math.floor(Math.random() * LetterBank.length)];
+        console.log(ComputerGuess)
+    }
 
 document.onkeyup = function(event) {
-    var UserGuess = event.key;
-    var ComputerGuess = LetterBank[Math.floor(Math.random() * LetterBank.length)];
+    var userGuess = String.fromCharCode(event.keyCode).toLowerCase();
 
-
-    if ( UserGuess === ComputerGuess){
-        wins++
-    }else if  
-        (guessesLeft -1 === 0) {
-            lost();
+    if (!/[a-z]/.test(userGuess)) {
+        alert ("Please choose any letter 'a' through 'z'")
+        guessesLeft++;
+        losses--;
     }
-    else { 
-        resetGame(); 
-        losses--       
+    if (guessesSoFar.indexOf(userGuess)=== -1) {
+        guessesSoFar.push(userGuess);
+    }
+    else {
+        alert ("You've already guessed this letter, please choose another one");
+        guessesLeft++;
+        losses--;
     }
 
-    
-}
 
-window.onload = function display () {
-    var winsP = document.getElementById("#wins");
-    var losesP = document.getElementById("#losses");
-    var guessLeft = document.getElementById("#guessesLeft");
-    var letterGuessed = document.getElementById("#guessed");
+    if (userGuess === ComputerGuess) {
+        wins++;
+        alert ("That is correct! Let's try again with a different letter...");
+        newWord();
+    }
 
-}
+    else {
+        losses++;
+        guessesLeft--;
+    }
 
-function win(){
-    wins++
-    resetGame();
-}
+    if (guessesLeft === 0) {
+        alert ("You've lost, sorry loser")
+        reset ();
+    }
 
-function lost () {
-    losses++;
-    resetGame();
-}
+        document.querySelector('#wins').innerHTML = "Win: " + wins;
+        document.querySelector('#losses').innerHTML = "Loss: " +losses;
+        document.querySelector('#guessesLeft').innerHTML = "Number of guess left: " + guessesLeft;
+        document.querySelector('#guessesSoFar').innerHTML = " Your guess so far: " + guessesSoFar;
 
-function fail() {
-    guessesLeft--;
-    guessedLetters.push(letter);
-}
+};
 
-function resetGame() {
-    guessesLeft = 10;
-    guessedLetters = [];
-    letterToGuess = LetterBank[Math.floor(Math.random() * LetterBank.length)];
-    console.log ("Letter to guess: " + letterToGuess);
-}
 
-var html = "<h1>The Psychic Game<h1>" + "<p>Guess which letter I'm thinking of<p>" + " <p> Wins: </p> " + wins + " <p> Losses: </p>" + losses + "<p> Guesses Left: </p> " + guessesLeft + "<p>Letters Guessed so far: </p>" + guessedLetters;
 
-document.querySelector("#game").innerHTML = html;
+
+
+
+
+
+
+
+
