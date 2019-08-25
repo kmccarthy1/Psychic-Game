@@ -30,7 +30,6 @@ document.onkeyup = function(event) {
     if (!/[a-z]/.test(userGuess)) {
         alert ("Please choose any letter 'a' through 'z'")
         guessesLeft++;
-        losses--;
     }
     if (guessesSoFar.indexOf(userGuess)=== -1) {
         guessesSoFar.push(userGuess);
@@ -38,7 +37,6 @@ document.onkeyup = function(event) {
     else {
         alert ("You've already guessed this letter, please choose another one");
         guessesLeft++;
-        losses--;
     }
 
 
@@ -49,12 +47,12 @@ document.onkeyup = function(event) {
     }
 
     else {
-        losses++;
         guessesLeft--;
     }
 
     if (guessesLeft === 0) {
         alert ("You've lost, sorry loser")
+        losses++;
         reset ();
     }
 
